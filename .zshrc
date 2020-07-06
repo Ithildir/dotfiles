@@ -24,6 +24,8 @@ source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.in
 source <(kubectl completion zsh)
 source ~/.config/zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 
+source ~/.config/zsh/aliases.zsh
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
