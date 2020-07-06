@@ -1,0 +1,52 @@
+[alias]
+	b = !git rev-parse --abbrev-ref HEAD
+	c = checkout
+	ca = commit --amend
+	can = commit --amend --no-edit
+	cc = !git checkout -- . && git clean -d --force
+	cf = commit --fixup
+	cm = commit --message
+	cp = cherry-pick
+	dc = diff --cached
+	g = grep --break --heading --line-number
+	pf = push --force
+	pn = !git push -u origin $(git b)
+	pu = !git push origin :$(git b)
+	ri = rebase --interactive
+	st = status
+	start = !git init && git commit --allow-empty --message 'Initial commit'
+	sy = !git fetch origin && git pull --rebase origin master
+	syb = !git fetch origin && git pull --rebase origin
+[core]
+	autocrlf = input
+	editor = code --wait
+	longpaths = true
+[diff]
+	tool = code
+[difftool "code"]
+	cmd = code --wait --diff $LOCAL $REMOTE
+[format]
+	pretty = oneline
+[log]
+	follow = true
+[merge]
+	renameLimit = 0
+	tool = meld
+[push]
+	default = simple
+[rebase]
+	autosquash = true
+[user]
+	name = Andrea Di Giorgi
+	email = adigiorgi@outlook.com
+[mergetool]
+	keepBackup = false
+	prompt = false
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
