@@ -1,0 +1,5 @@
+function gitri() {
+  REF=${1:-master}
+
+  git rebase --interactive $(git merge-base --fork-point $REF)
+}

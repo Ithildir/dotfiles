@@ -11,7 +11,9 @@ SAVEHIST=100000
 
 bindkey -e
 
-autoload -Uz compinit
+fpath=(~/.config/zsh/functions $fpath)
+
+autoload -Uz compinit ~/.config/zsh/functions/*
 compinit
 
 setopt noautomenu
