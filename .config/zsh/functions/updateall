@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+function updateall() {
+  if which brew; then
+    brew update
+    brew upgrade
+    brew cleanup -s
+    brew cask upgrade
+    brew doctor
+    brew missing
+  fi
+
+  if which gcloud; then
+    gcloud components update --quiet
+  fi
+}
