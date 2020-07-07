@@ -18,10 +18,17 @@ compinit
 
 setopt noautomenu
 
-source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
-source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
+if command -v gcloud &> /dev/null; then
+  local gcloudDir=`dirname $(command -v gcloud)`
 
-source <(kubectl completion zsh)
+  source "$gcloudDir/completion.zsh.inc"
+  source "$gcloudDir/path.zsh.inc"
+fi
+
+if command -v kubectl &> /dev/null; then
+  source <(kubectl completion zsh)
+fi
+
 source ~/.config/zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 
 source ~/.config/zsh/aliases.zsh
