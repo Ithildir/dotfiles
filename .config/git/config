@@ -32,21 +32,15 @@
 [merge]
 	renameLimit = 0
 	tool = meld
+[mergetool]
+	keepBackup = false
+	prompt = false
 [push]
 	default = simple
 [rebase]
 	autosquash = true
+[url "git@github.com:"]
+	insteadOf = https://github.com/
 [user]
 	name = Andrea Di Giorgi
 	email = adigiorgi@outlook.com
-[mergetool]
-	keepBackup = false
-	prompt = false
-[url "git@github.com:"]
-	insteadOf = https://github.com/
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
