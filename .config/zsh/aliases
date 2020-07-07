@@ -1,1 +1,3 @@
 alias honeygitpn="git syb staging && git pn && hub browse"
+
+alias ncu="npx npm-check-updates"
