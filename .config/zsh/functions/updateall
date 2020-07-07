@@ -1,6 +1,12 @@
 #!/bin/zsh
 
 function updateall() {
+  if command -v apt &> /dev/null; then
+    sudo apt update full-upgrade
+    sudo apt full-upgrade
+    sudo apt autoremove
+  fi
+
   if command -v brew &> /dev/null; then
     brew update
     brew upgrade
