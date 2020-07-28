@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+function honeydeploy() {
+  rm -rf kubernetes.*.yml
+
+  PROJECT=$1
+
+  export USE_COMMIT_HASH=true
+
+  npm i -g @honeyscience/deploy-tools@latest
+
+  npm run build "$PROJECT"
+  npm run docker-build -- -y "$PROJECT"
+  npm run docker-push -- -y "$PROJECT"
+  npm run kube-deploy -- -y "$PROJECT"
+}
