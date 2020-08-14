@@ -1,6 +1,7 @@
 #!/bin/zsh
 
 alias honeyforwardgateway="kubectl --context=gke_honey-production_us-central1_internal-api-a port-forward deployments/internal-api-gateway 30000:8080"
+alias honeyforwardstaginggateway="kubectl --context=gke_honey-staging_us-central1_internal-api-a port-forward deployments/internal-api-gateway 30000:8080"
 alias honeygitpn="git syb staging && git pn && hub browse"
 
 alias ncu="npx npm-check-updates"
