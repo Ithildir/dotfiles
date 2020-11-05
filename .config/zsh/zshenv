@@ -1,3 +1,7 @@
 # XDG directories
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
+
+# Honey
+export CORE_PACKAGE_USER="Ithildir"
+export GOPRIVATE="github.com/honeyscience"
