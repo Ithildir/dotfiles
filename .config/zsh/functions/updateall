@@ -19,4 +19,8 @@ function updateall() {
   if command -v gcloud &> /dev/null; then
     gcloud components update --quiet
   fi
+
+  if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
+    powershell.exe -Command "Start-Process cmd -Verb RunAs -ArgumentList '/c choco upgrade all -y'"
+  fi
 }
