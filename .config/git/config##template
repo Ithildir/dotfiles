@@ -49,4 +49,8 @@
 	insteadof = git@github.paypal.com:
 [user]
 	name = Andrea Di Giorgi
+{% if yadm.hostname == "LM-LTH-40012034" %}
+	email = adigiorgi@paypal.com
+{% else %}
 	email = adigiorgi@outlook.com
+{% endif %}
