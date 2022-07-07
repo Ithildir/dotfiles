@@ -1,7 +1,0 @@
-#!/bin/zsh
-
-function honeyjira() {
-  TICKET=$1
-
-  open "https://joinhoney.atlassian.net/browse/$TICKET"
-}

@@ -39,18 +39,10 @@
 	default = simple
 [rebase]
 	autosquash = true
-[url "https://github.com"]
-	insteadof = ssh://git@github.com
-[url "https://github.com/"]
-	insteadof = git@github.com:
-[url "https://github.paypal.com"]
-	insteadof = ssh://git@github.paypal.com
-[url "https://github.paypal.com/"]
-	insteadof = git@github.paypal.com:
 [user]
 	name = Andrea Di Giorgi
-{% if yadm.hostname == "LM-LTH-40012034" %}
-	email = adigiorgi@paypal.com
+{% if yadm.hostname == "andreas-mbp.lan" %}
+	email = adigiorgi@clickup.com
 {% else %}
 	email = adigiorgi@outlook.com
 {% endif %}
