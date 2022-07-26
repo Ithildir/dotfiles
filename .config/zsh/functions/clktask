@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+function clktask() {
+  TICKET=$1
+
+  open "https://staging.clickup.com/t/333/$TICKET"
+}
