@@ -41,7 +41,7 @@
 	autosquash = true
 [user]
 	name = Andrea Di Giorgi
-{% if yadm.hostname == "andreas-mbp.lan" %}
+{% if yadm.hostname == "Andreas-MacBook-Pro.local" %}
 	email = adigiorgi@clickup.com
 {% else %}
 	email = adigiorgi@outlook.com
