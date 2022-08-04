@@ -1,4 +1,6 @@
 #!/bin/zsh
 
+alias clickupgitpn="git sy && git pn && hub browse"
+
 alias ncu="npx npm-check-updates"
 alias updatedotfiles="yadm fetch && yadm reset --hard origin/master && yadm bootstrap"
