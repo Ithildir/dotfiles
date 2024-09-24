@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+function sdmkube() {
+    SHARD=$1
+
+    sdm disconnect --all
+    sdm connect "$SHARD-privileged"
+    sdm kubernetes update-config
+}

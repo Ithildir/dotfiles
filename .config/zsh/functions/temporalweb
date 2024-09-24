@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+function temporalweb() {
+    SHARD=$1
+
+    clickupkube "$SHARD"
+    kubectl port-forward -n core deployment/temporal-web 8082:8080
+}
