@@ -3,6 +3,8 @@
 function temporalweb() {
     SHARD=$1
 
-    clickupkube "$SHARD"
+    sdm disconnect --all
+    sdm connect "$SHARD-privileged"
+    sdm kubernetes update-config "$SHARD-privileged" --force
     kubectl port-forward -n core deployment/temporal-web 8082:8080
 }
