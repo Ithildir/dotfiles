@@ -6,5 +6,21 @@ function temporalweb() {
     sdm disconnect --all
     sdm connect "$SHARD-privileged"
     sdm kubernetes update-config "$SHARD-privileged" --force
-    kubectl port-forward -n core deployment/temporal-web 8082:8080
+
+    # Function to clean up background processes
+    function cleanup() {
+        echo "Stopping port forwarding..."
+        pkill -P $$
+        exit 0
+    }
+
+    # Trap SIGINT (CTRL-C) and call cleanup
+    trap cleanup SIGINT
+
+    # Push commands in the background, when the script exits, the commands will exit too
+    kubectl port-forward -n core deployment/temporal-web 8082:8080 &
+    kubectl port-forward -n core deployment/temporal-frontend 7233:7233 &
+
+    echo "Press CTRL-C to stop port forwarding and exit the script"
+    wait
 }
