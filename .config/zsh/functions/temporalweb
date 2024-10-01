@@ -22,5 +22,6 @@ function temporalweb() {
     kubectl port-forward -n core deployment/temporal-frontend 7233:7233 &
 
     echo "Press CTRL-C to stop port forwarding and exit the script"
+
     wait
 }
