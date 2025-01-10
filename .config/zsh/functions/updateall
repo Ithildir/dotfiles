@@ -20,10 +20,6 @@ function updateall() {
     gcloud components update --quiet
   fi
 
-  if command -v pyenv &> /dev/null; then
-    pyenv update
-  fi
-
   if command -v softwareupdate &> /dev/null; then
     softwareupdate --install --all --agree-to-license
   fi
