@@ -4,8 +4,8 @@ function temporalweb() {
     SHARD=$1
 
     sdm disconnect --all
-    sdm connect "$SHARD-privileged"
-    sdm kubernetes update-config "$SHARD-privileged" --force
+    sdm connect "$SHARD"
+    sdm kubernetes update-config "$SHARD" --force
 
     # Function to clean up background processes
     function cleanup() {
