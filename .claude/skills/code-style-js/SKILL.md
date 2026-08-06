@@ -37,3 +37,4 @@ The measure of "simpler" is how fast the next reader understands the code, not l
 - Boolean returns stay direct: `return (x > 0) && y;` — never the expanded if/return-true/return-false form.
 - `switch` is allowed on a TypeScript discriminated union with an exhaustiveness check in `default`; otherwise use a lookup object or if/else.
 - Layout, wrapping, and whitespace belong to Prettier and are not part of this skill.
+- Blank-line grouping (rule 207) is the exception to "whitespace belongs to Prettier": Prettier preserves blank lines but never inserts them, so a formatting pass checks 207 against every function body it touches — test and helper bodies included.

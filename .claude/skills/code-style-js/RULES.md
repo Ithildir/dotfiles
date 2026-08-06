@@ -244,15 +244,26 @@ Numbered blocks: 0xx meta, 1xx naming, 2xx ordering, 3xx simplification, 4xx con
  }
 ```
 
-### 207: Blank Lines Delimit Logical Groups
+### 207: Blank Lines Delimit Logical Groups ★
 
-**Why:** A blank line ends a finished setup block; statements that read as one step stay adjacent. A group whose internal order cannot be made deterministic splits into separate groups, so the reader knows the order is intentional.
+**Why:** A blank line separates every logical step — declaration group, guard, loop, return in a function body; arrange, act, assert in a test body; helper and factory bodies included. A packed run of statements makes the reader recover the grouping the author already knew. Statements that read as one step stay adjacent: a dependent declaration pair, parallel assertions, a comment with the line it describes. A group whose internal order cannot be made deterministic splits into separate groups, so the reader knows the order is intentional.
 
 ```diff
  themeDisplay.setLocale(locale);
  themeDisplay.setUser(user);
 +
  const request = new ThemeRequest();
+```
+
+```diff
+ it('returns the first page', async () => {
+ 	const fake = new FakeAthena({queues});
++
+ 	const page = await makeService(fake).runQuery({sql: 'SELECT 1'});
++
+ 	expect(page.rows).toHaveLength(2);
+ 	expect(page.warnings).toEqual([]);
+ });
 ```
 
 ### 208: Canonical Order for Recurring Parameter Families
@@ -501,6 +512,17 @@ Numbered blocks: 0xx meta, 1xx naming, 2xx ordering, 3xx simplification, 4xx con
 +await Promise.all(
 +	ids.map((id) => httpClient.delete(`${baseURL}/users/${id}`))
 +);
+```
+
+### 411: Every if Body Takes Braces ★
+
+**Why:** A statement riding the condition line is skimmed past — the eye registers the `if` and moves on, missing the `throw` or `return` attached to it. The braceless form also invites the classic goto-fail bug: a second statement appended under the `if` runs unconditionally. Every `if` body goes in braces on its own line, however short.
+
+```diff
+-if (next instanceof Error) throw next;
++if (next instanceof Error) {
++	throw next;
++}
 ```
 
 ## 5xx — Strings, Messages, and Prose
