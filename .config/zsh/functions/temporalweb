@@ -2,10 +2,32 @@
 
 function temporalweb() {
     SHARD=$1
+    TASK_ID=$2
+
+    if [[ -z "$SHARD" || -z "$TASK_ID" ]]; then
+        echo "Usage: temporalweb <shard> <task-id>" >&2
+        echo "  <task-id> is the ClickUp task ID the SDM privileged access request is anchored to (e.g. CORE-1234)" >&2
+        return 1
+    fi
 
     sdm disconnect --all
     sdm connect "$SHARD"
     sdm kubernetes update-config "$SHARD" --force
+
+    # port-forward needs a temporary cu:cluster-privileged grant (contexts are read-only by default).
+    # See runbooks/CoreServices/temporal.md, "Request privileged access to a shard's EKS cluster".
+    if [[ "$(kubectl --context "$SHARD" auth can-i create pods/portforward -n core 2>/dev/null)" != "yes" ]]; then
+        echo "No privileged access on $SHARD, requesting cu:cluster-privileged grant..."
+        sdm access to "$SHARD" --k8sGroup='cu:cluster-privileged' --duration 6h --reason "$TASK_ID: temporal CLI port-forward to temporal-frontend" || return 1
+
+        while true; do
+            sdm kubernetes update-config "$SHARD" --force >/dev/null
+            [[ "$(kubectl --context "$SHARD" auth can-i create pods/portforward -n core 2>/dev/null)" == "yes" ]] && break
+            echo "Waiting for the grant to become active (check with: sdm access requests)..."
+            sleep 10
+        done
+        echo "Privileged access active on $SHARD"
+    fi
 
     # Function to clean up background processes
     function cleanup() {
@@ -18,7 +40,7 @@ function temporalweb() {
     trap cleanup SIGINT
 
     # Push commands in the background, when the script exits, the commands will exit too
-    kubectl port-forward -n core deployment/temporal-web 8082:8080 &
+    # kubectl port-forward -n core deployment/temporal-web 8082:8080 &
     kubectl port-forward -n core deployment/temporal-frontend 7233:7233 &
 
     echo "Press CTRL-C to stop port forwarding and exit the script"
