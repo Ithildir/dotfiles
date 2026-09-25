@@ -74,8 +74,6 @@ One more file, imported here:
 - `main` is the trunk and stays releasable. The main checkout stays on `main`.
 - Every session works in its own worktree. Desktop creates it; a session that
   starts in a main checkout runs `EnterWorktree` before the first edit.
-- `.claude/worktrees/` goes in each repo's `.git/info/exclude`, never in its
-  `.gitignore`.
 - Rename the session repo's branch to `<type>/<id>-<slug>` before the first
   push. Branches are short-lived.
 - Subagents inherit the session's worktree. Never pass `isolation` on a
