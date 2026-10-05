@@ -24,9 +24,6 @@ One more file, imported here:
 
 - Never end a turn without the output of a call you made, backgrounded or not.
   Report what it returned, or that it failed and how.
-- Before ending a turn on work you were asked to do, read your last paragraph.
-  If it is a plan, a question you can answer yourself, or "I'll…", do the work
-  now.
 - Verify, don't recall. Read the file, run the command or open the docs before
   stating how something behaves. A version, flag or API from memory is a guess
   until checked.
@@ -71,7 +68,8 @@ One more file, imported here:
 
 ## Git
 
-- `main` is the trunk and stays releasable. The main checkout stays on `main`.
+- The default branch is the trunk and stays releasable. The main checkout stays
+  on it.
 - Every session works in its own worktree. Desktop creates it; a session that
   starts in a main checkout runs `EnterWorktree` before the first edit.
 - Rename the session repo's branch to `<type>/<id>-<slug>` before the first
@@ -87,11 +85,11 @@ One more file, imported here:
   mid-task is proposed the same way.
 - A task that spans repos runs in one session. An added repo is its main
   checkout: never edit it. Fetch, then `git -C <repo> worktree add
-  .claude/worktrees/<id>-<slug> -b <type>/<id>-<slug> origin/main`, and brief
-  that repo's executor with the absolute path.
+  .claude/worktrees/<id>-<slug> -b <type>/<id>-<slug> origin/<default branch>`,
+  and brief that repo's executor with the absolute path.
 - One PR per repo, every branch carrying the task's ID. The upstream change
-  lands first and stays backward compatible, so every repo's `main` stays
-  releasable; the downstream PR proves the seam.
+  lands first and stays backward compatible, so every repo's default branch
+  stays releasable; the downstream PR proves the seam.
 - Every change goes through a PR, squash merged. Never `gh pr create --fill`:
   it ignores the template.
 - Merging waits for the human's acceptance, which is the authority. On it:
@@ -106,21 +104,19 @@ One more file, imported here:
 Everything a human reads — docs, commits, PR bodies, review notes, chat —
 reads like a person wrote it.
 
-- No inflated connectives: Moreover, Furthermore, It's worth noting,
-  Importantly, Notably, In essence, At its core, Ultimately, That said.
-- No promotional filler: powerful, seamless, robust, rich, cutting-edge, unless
-  the word carries checkable meaning.
-- One em dash per paragraph. No summary flourish, no "In conclusion".
-- No rhetorical transition questions. State the point.
-- No "not X, but Y" antithesis manufacturing emphasis.
-- No meta lines narrating the document. No grading your own work.
+- State each point directly, in plain words, at normal volume. An adjective
+  stays only when it carries checkable meaning.
+- One em dash per paragraph.
+- End when the content ends: no summary, no remarks about the document, no
+  verdict on your own work.
 - Name the number, the file, the command, the version.
 - One home per fact. Repeat inside a document; never across documents.
 - A rules document states what it forbids or requires, never why it is nice.
 
 Commit message: imperative subject, then why it was needed, then what it cost.
-No `type(scope):` prefix; nothing here parses one. End AI-authored commits with
-the `Co-Authored-By` trailer, which is attribution and never a routing input.
+No `type(scope):` prefix unless the repo's commit hook or docs require one. End
+AI-authored commits with the `Co-Authored-By` trailer, which is attribution and
+never a routing input.
 
 ## Routing
 
@@ -129,15 +125,14 @@ the `Co-Authored-By` trailer, which is attribution and never a routing input.
 | plan, delegate, spec, execute | Opus 5.5, `claude-opus-5-5` | the main session and its subagents |
 | review | Codex, `gpt-6-astra` | the `codex` plugin, configured in `~/.codex/config.toml` |
 
-- Every Anthropic seat is Opus 5.5. Anthropic writes every change and Codex
-  reviews every change.
-- The session is set once with `/model claude-opus-5-5`. Subagents inherit it;
+- Every Anthropic seat runs the model in the table. Anthropic writes every
+  change and Codex reviews every change.
+- The session is set once with `/model` to that model. Subagents inherit it;
   never pass another model on the Agent call.
-- The session orchestrates: it plans, writes specs and briefs, delegates and
-  reports. It does not write code or run proof.
-- Source inspection that ends in an edit is execution, not planning.
-- Execution goes to the general-purpose subagent with a brief. Explore may do
-  read-only research.
+- The session plans, reads what it needs, and makes small contained edits
+  itself. It delegates to the general-purpose subagent when the work spans many
+  steps or files, produces bulky output (builds, test runs), or splits into
+  parallel parts on disjoint files. Explore may do read-only research.
 - A brief names the goal, the stop point, the rulings, the standing
   constraints and the files.
 - An executor runs to the stop point, commits, and never pushes. A ruling the
@@ -202,10 +197,10 @@ PR.
 ## Running the pass
 
 1. A subagent builds and runs the tests, and returns the output.
-2. In each worktree, two runs against `origin/main`, in the background,
+2. In each worktree, two runs against the default branch, in the background,
    started together:
-   - bare: `/codex:review --base origin/main --background`
-   - zoom-out: `/codex:adversarial-review --base origin/main --background`
+   - bare: `/codex:review --base origin/<default branch> --background`
+   - zoom-out: `/codex:adversarial-review --base origin/<default branch> --background`
      followed by the focus text. Zoom-out asks how the change sits in the
      tree: new coupling, blast radius, a signature change forcing edits at N
      call sites, a second way to do something that already exists. The focus
@@ -217,9 +212,9 @@ PR.
 3. Fold them. Dissent survives — one `critical` from one run is `critical`.
    Name a run that did not report: one `/codex:status` shows failed or
    cancelled.
-4. An executor fixes and re-proves, then the pass runs again. `critical` and
-   `high` are agent-owned; never hand the human a list. Two rounds, no third.
-   Write down what is still open.
+4. The session or an executor fixes and re-proves, then the pass runs again.
+   `critical` and `high` are agent-owned; never hand the human a list. Two
+   rounds, no third. Write down what is still open.
 5. Rename the branch if it still has its worktree name, push, open the PR, and
    post acceptance steps as a comment.
 
@@ -238,7 +233,7 @@ is not available.
 
 ## Acceptance steps
 
-One PR comment, posted when the PR opens, under 40 lines: where to look, one
+One PR comment, posted when the PR opens, readable in one pass: where to look, one
 command that launches what is already built, numbered steps, one expected
 result per step, what you verified yourself and what you could not.
 
